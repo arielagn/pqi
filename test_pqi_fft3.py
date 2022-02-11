@@ -34,31 +34,47 @@ print(len(i)) #sacar
 iarr=np.array(i)
 ical=iarr*s.calI
 # fft
-ucalf=fft(ucal)[0:(N//2)-1]  #fftpack.fft(ucal)
+ucalf=fft(ucal)[0:(N//2)-1]*2.0/N #fftpack.fft(ucal)
+ucalfNoDc=ucalf[1:(N//2)-1]
 f=fftfreq(N,1/fs)[0:(N//2)-1]
-icalf=fft(ical)[0:(N//2)-1]
-# deteccion de picos
+icalf=fft(ical)[0:(N//2)-1]*2.0/N
+icalfNoDc=icalf[1:(N//2)-1]
+icalf[0]=icalf[0]/2
+# Calculo de valores RMS
+UPowerEspec=(ucalfNoDc.real**2)+(ucalfNoDc.imag**2)
+Urms=np.sqrt(np.sum(UPowerEspec)/2.0)
+IPowerEspec=icalf.real**2+icalf.imag**2
+Irms=np.sqrt(np.sum(IPowerEspec)/2.0)
+# DC corriente
+IDc=np.abs(icalf[0])
+# Potencias activa, reactiva, aparente, factor de potenca
+PAct=np.sum(icalfNoDc.real*ucalfNoDc.real+icalfNoDc.imag*ucalfNoDc.imag)/2.0
+PRea=np.sum(icalfNoDc.real*ucalfNoDc.imag-icalfNoDc.imag*ucalfNoDc.real)/2.0
+PApar=Urms*Irms
+PowerFactor=PAct/PApar
+
+
+print("U rms="+str(Urms))
+print("I rms="+str(Irms))
+print("I dc="+str(IDc))
+print("Pot Act="+str(PAct))
+print("Pot Reac="+str(PRea))
+print("Fact Pot="+str(PowerFactor))
+print("Pot Apare="+str(PApar))
+
+"""
 espect=np.zeros(len(ucalf))
 espect=2.0/N*np.abs(ucalf)
     
 print(len(espect))
 peaks, _ = find_peaks(espect, height=0.2)
-
-print ("freq:"+str(f[peaks[0]])+" value:"+str(ucalf[peaks[0]])+" abs:"+str(espect[peaks[0]]))
-
-powerEspec=ucalf.real**2+ucalf.imag**2
-rms=np.sqrt(2.0*np.sum(powerEspec)/(N**2))
-
-print (rms)
-
-rms2=np.sqrt(np.sum((np.abs(ucalf)*2.0/N/np.sqrt(2))**2))
-print (rms2)
 """
-plt.xlabel('freq [Hz]')
+
+plt.xlabel('time')
 plt.ylabel('Amplitude [V]')
 plt.title('Tension')
-plt.plot(f,espect)
-plt.plot(f[peaks], espect[peaks], "x")
+plt.plot(ucal)
+
 plt.grid()
 plt.show()
-"""
+
