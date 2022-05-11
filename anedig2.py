@@ -4,7 +4,8 @@ import re
 import numpy as np
 
 class aneDig():
-    def __init__(self):
+    def __init__(self,duracion):
+        self.duracion=duracion
         self.sts=0
         self.count=0
         self.val=[]
@@ -59,7 +60,7 @@ class aneDig():
             vel=self.deco(data)
             #print(vel)
             self.val.append(vel)
-            if (diferencia>=60):
+            if (diferencia>=self.duracion):
                 self.sts=2
         promedio=np.mean(self.val)
         media=np.median(self.val)

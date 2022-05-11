@@ -3,9 +3,11 @@ from scipy.fftpack import fftfreq
 from scipy.signal import find_peaks
 import numpy as np
 import pqi
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import time
 import anedig2
+import psycopg2
+from test_dbconn import config
 
 s=pqi.pqi(12)
 s.setW()
@@ -96,17 +98,54 @@ for i in range(series):
     # potencia de desformacion (con la hipotesis de THDi e THDu menor a 5% 
     Pdesf[i]= Urms[i]*np.sqrt(np.sum(icalf_abs**2)-icalf_abs[0]**2)
 
-print("{\"time\":",stamp,", \"vprom\":",viprom,", \"vmediana\":",vimediana,", \"vstd\":",vistd,", \"freq\":",np.average(freq),
-      ", \"Urms\":",np.average(Urms),
-      ", \"Irms\":",np.average(Irms),
-      ", \"UrmsPoli\":",np.average(UrmsPoli),
-      ", \"IrmsPoli\":",np.average(IrmsPoli),
-      ", \"THDu\":",np.average(THD_U),
-      ", \"THDi\":",np.average(THD_I),
-      ", \"IDC\":",np.average(I_dc),
-      ", \"Pact\":",np.average(P),
-      ", \"Preac\":",np.average(Q),
-      ", \"Papar\":",np.average(S),
-      ", \"FactPot\":",np.average(PF),
-      ", \"Pdesf\":",np.average(Pdesf),
+sql = ("INSERT INTO power(tiempo,vprom,vmediana,vstd,freq,"
+        "urms,irms,urmspoli,irmspoli,thdu,thdi,idc,pact,preac,"
+        "papar,factpot,pdesf) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,"
+        "%s,%s,%s,%s,%s,%s,%s,%s)")
+conn = None
+
+freq_av=np.averange(freq)
+Urms_av=np.average(Urms)
+Irms_av=np.average(Irms)
+UrmsPoli_av=np.average(UrmsPoli)
+IrmsPoli_av=np.average(IrmsPoli)
+THD_U_av=np.average(THD_U)
+THD_I_av=np.average(THD_I)
+I_dc_av=np.average(I_dc)
+P_av=np.average(P)
+Q_av=np.average(Q)
+S_av=np.average(S)
+PF_av=np.average(PF)
+Pdesf_av=np.average(Pdesf)
+if (freq_av>49):
+    print("{\"time\":",stamp,", \"vprom\":",viprom,", \"vmediana\":",vimediana,", \"vstd\":",vistd,", \"freq\":",freq_av,
+      ", \"Urms\":",Urms_av,
+      ", \"Irms\":",Irms_av,
+      ", \"UrmsPoli\":",UrmsPoli_av,
+      ", \"IrmsPoli\":",IrmsPoli_av,
+      ", \"THDu\":",THD_U_av,
+      ", \"THDi\":",THD_I_av,
+      ", \"IDC\":",I_dc_av,
+      ", \"Pact\":",P_av,
+      ", \"Preac\":",Q_av,
+      ", \"Papar\":",S_av,
+      ", \"FactPot\":",PF_av,
+      ", \"Pdesf\":",Pdesf_av,
       "}")
+    try:
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute(sql,(stamp,viprom,vimediana,vistd,
+                         freq_av,Urms_av,Irms_av,UrmsPoli_av,IrmsPoli_av,
+                         THD_U_av,THD_I_av,I_dc_av,P_av,Q_av,S_av,
+                         PF_av,Pdesf_av))
+        conn.commit()
+        cur.close()
+    except (Ecveption,psycopg2.DatabaseError) as error:
+        print (error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+    
