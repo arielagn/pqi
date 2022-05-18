@@ -23,7 +23,7 @@ table_power=("CREATE TABLE power ("
         "pdesf float"
         ")")    
         
-table_fliker=("CREATE TABLE fliker ("
+table_flicker=("CREATE TABLE flicker ("
         "tiempo timestamp NOT NULL,"
         "vprom float,"
         "vmediana float,"
@@ -137,6 +137,6 @@ def cargar():
 if __name__ == '__main__':
 #     connect('SELECT version()')
 #     connect(table_power)
-#     connect(table_fliker)
-    cargar()
+    connect(table_flicker)
+#    cargar()
     

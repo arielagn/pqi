@@ -27,25 +27,29 @@ series=15
 ventana=1050
 N=series*ventana #15754 
 d=s.sendCom('setFs',5) #0)
-print(d)
+#print(d)
 
 
 d=s.sendCom('getVI',N)
-print(d) #sacar
+#print(d) #sacar
 
 stamp=time.strftime("\"%Y-%m-%d %H:%M:%S\"")
 viprom,vimediana,vistd=ane.start()
+#viprom=1
+#vimediana=1
+#vistd=1
+
 time.sleep(4)
 
-print("traerV") #sacar
+#print("traerV") #sacar
 u=s.sendCom('sendV',N)
-print(len(u)) #sacar
+#print(len(u)) #sacar
 uarr=np.array(u)
 ucal=uarr*s.calV
 
-print("traerI") #sacar
+#print("traerI") #sacar
 i=s.sendCom('sendI',N)
-print(len(i)) #sacar
+#print(len(i)) #sacar
 iarr=np.array(i)
 ical=iarr*s.calI
 # frequency array
@@ -104,7 +108,7 @@ sql = ("INSERT INTO power(tiempo,vprom,vmediana,vstd,freq,"
         "%s,%s,%s,%s,%s,%s,%s,%s)")
 conn = None
 
-freq_av=np.averange(freq)
+freq_av=np.average(freq)
 Urms_av=np.average(Urms)
 Irms_av=np.average(Irms)
 UrmsPoli_av=np.average(UrmsPoli)
