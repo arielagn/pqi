@@ -17,7 +17,7 @@ print(d)
 #ane=anemometro.anemometro()
 #print (ane.start())
 time.sleep(33)
-#print("traerV")
+print("traerV")
 #d=s.sendCom('sendV',60000)
 
 
