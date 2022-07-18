@@ -146,10 +146,10 @@ if (freq_av>49):
                          PF_av,Pdesf_av))
         conn.commit()
         cur.close()
-    except (Ecveption,psycopg2.DatabaseError) as error:
+    except (Exception,psycopg2.DatabaseError) as error:
         print (error)
     finally:
         if conn is not None:
             conn.close()
 
-    
+  

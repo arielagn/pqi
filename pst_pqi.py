@@ -9,15 +9,6 @@ import flicker
 import psycopg2
 from test_dbconn import config
 
-res=float(sys.argv[1])
-ind=float(sys.argv[2])
-sn = float(sys.argv[3])
-skfic=(220 ** 2)/(np.sqrt(res**2+(2*np.pi*50*ind)**2))
-rcc=skfic/sn
-ang=180/np.pi*np.arctan(2*np.pi*50*ind/res)
-#print( rcc ,ang)
-
-
 s=pqi.pqi(12)
 s.setW()
 #ane=anemometro.anemometro()
@@ -55,8 +46,8 @@ ical=iarr*s.calI
 
 f=flicker.flicker(2000,50,220)
 
-uo=f.Vficticia(res,ind,ucal,ical )
-uoNorm = f.normSignalWoFil(uo)
+#uo=f.Vficticia(res,ind,ucal,ical )
+uoNorm = f.normSignalWoFil(ucal)
 z = f.filters(uoNorm)
 ps,perc,pst = f.flicker(z[24000:],65)
 _,vrms = f.rms(uo)
@@ -66,6 +57,8 @@ _,irms = f.rms(ical)
 
 #if (pst>1):
 #    np.savetxt(stamp+".csv",z,delimiter=",")
+rcc=0 #Para indicar y filtrar que pst es el de tension
+ang=0
 print("{\"time\":",stamp,", \"vprom\":",viprom,", \"vmediana\":",vimediana,", \"vstd\":",vistd,", \"pst\":",pst,", \"vrms\":",vrms,", \"irms\":",irms,", \"rcc\":",rcc,", \"ang\":",ang,"}")
 
 sql = ("INSERT INTO flicker(tiempo,vprom,vmediana,vstd,pst,"

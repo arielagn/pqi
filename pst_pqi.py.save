@@ -9,16 +9,7 @@ import flicker
 import psycopg2
 from test_dbconn import config
 
-res=float(sys.argv[1])
-ind=float(sys.argv[2])
-sn = float(sys.argv[3])
-skfic=(220 ** 2)/(np.sqrt(res**2+(2*np.pi*50*ind)**2))
-rcc=skfic/sn
-ang=180/np.pi*np.arctan(2*np.pi*50*ind/res)
-#print( rcc ,ang)
-
-
-s=pqi.pqi(12)
+pqi.pqi(12)
 s.setW()
 #ane=anemometro.anemometro()
 ane=anedig2.aneDig(60)
