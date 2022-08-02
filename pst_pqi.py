@@ -34,7 +34,7 @@ time.sleep(65)
 #print("traerV") #sacar
 u=s.sendCom('sendV',144000)
 #print(len(u)) #sacar
-uarr=np.array(u)
+uarr=np.array(u,dtype=float)
 ucal=uarr*s.calNorm*311.127
 
 
@@ -50,7 +50,7 @@ f=flicker.flicker(2000,50,220)
 uoNorm = f.normSignalWoFil(ucal)
 z = f.filters(uoNorm)
 ps,perc,pst = f.flicker(z[24000:],65)
-_,vrms = f.rms(uo)
+_,vrms = f.rms(ucal)
 _,irms = f.rms(ical)
 
 

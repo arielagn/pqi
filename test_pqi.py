@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import time
 import pqi
 import anemometro
-import fliker
+import flicker
 
 s=pqi.pqi(12)
 s.setW()
