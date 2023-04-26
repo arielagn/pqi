@@ -9,36 +9,37 @@ import flicker
 s=pqi.pqi(12)
 s.setW()
 
-
-d=s.sendCom('getVI',60000)
+#d=s.sendCom('setFs',5) #0)
+#print(d)
+d=s.sendCom('getVI',6000)
 print(d)
 
             
 #ane=anemometro.anemometro()
 #print (ane.start())
-time.sleep(33)
+time.sleep(10)
 print("traerV")
-#d=s.sendCom('sendV',60000)
-
-
-#de=np.array(d,dtype='float')
-
-#defV=de*s.calV
-
-#print(len(d))
-
-print("traerI")
-d=s.sendCom('sendI',60000)
+d=s.sendCom('sendV',6000)
 
 
 de=np.array(d,dtype='float')
 
-defI=de*s.calI
+defV=de*s.calV
 
 print(len(d))
+
+#print("traerI")
+#d=s.sendCom('sendI',60000)
+
+
+#de=np.array(d,dtype='float')
+
+#defI=de*s.calI
+
+#print(len(d))
 """
 
-"""
+    """
 #f=fliker.fliker(2000,50,220)
 #v = f.normSignalWoFil(defV)
 #_,vrms = f.rms(v)
@@ -66,10 +67,10 @@ print(len(d))
 
 plt.xlabel('time [s]')
 plt.ylabel('Amplitude [V]')
-#plt.ylim(300,320)
+# plt.ylim(300,320)
 plt.title('Tension')
-#plt.plot(defV)
-plt.plot(defI)
+plt.plot(defV)
+#plt.plot(defI)
 plt.grid()
 plt.show()
-
+s.resW()

@@ -11,7 +11,7 @@ from test_dbconn import config
 
 s=pqi.pqi(12)
 s.setW()
-ane=anedig2.aneDig(3)
+#ane=anedig2.aneDig(3)
 
 # muestreo FS=31507Hz prescalar p FS*=FS/(p+1)
 # p=15 FS*=1969,2Hz
